@@ -1,0 +1,19 @@
+{{- if .Values.rbac.enable }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+    name: kubedeck-admin
+    labels:
+        app.kubernetes.io/name: kubedeck
+        app.kubernetes.io/managed-by: kustomize
+roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: cluster-admin
+subjects:
+    - kind: ServiceAccount
+      name: kubedeck-controller-manager
+      namespace: {{ .Release.Namespace }}
+{{- end -}}

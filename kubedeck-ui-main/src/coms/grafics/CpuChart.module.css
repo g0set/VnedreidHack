@@ -1,0 +1,29 @@
+
+.cpuChartContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;           /* 🔥 блокируем вертикальный скролл */
+}
+
+.chartArea {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;              /* 🔥 важно: блокирует рост вложенных SVG */
+}
+
+.legend {
+  width: 180px;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  overflow: hidden;           /* 🔥 убираем прокрутку */
+}
+
+.legendItem {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}

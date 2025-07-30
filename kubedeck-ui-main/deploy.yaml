@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: kubedeckui
+    labels:
+        app: kubedeckui
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: kubedeckui
+    template:
+        metadata:
+            labels:
+                app: kubedeckui
+        spec:
+            containers:
+                - name: kubedeckui
+                  image: registry.orion.nikcorp.ru/kubedeckui:0.0.21
+                  ports:
+                      - containerPort: 8173
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: kubedeckui-service
+spec:
+    selector:
+        app: kubedeckui
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 8173
+    type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: kubedeckui-ingress
+    annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+    ingressClassName: nginx
+    tls:
+        - secretName: ui-orion-nikcorp-ru-tls
+          hosts:
+              - ui.orion.nikcorp.ru
+    rules:
+        - host: ui.orion.nikcorp.ru
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: kubedeckui-service
+                            port:
+                                number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: prometheus-ingress
+    namespace: kube-prometheus-stack
+    annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+    ingressClassName: nginx
+    tls:
+        - secretName: prometheus-tls
+          hosts:
+              - ui.orion.nikcorp.ru
+    rules:
+        - host: ui.orion.nikcorp.ru
+          http:
+              paths:
+                  - path: /prometheus(/|$)(.*)
+                    pathType: ImplementationSpecific
+                    backend:
+                        service:
+                            name: kube-prometheus-stack-prometheus
+                            port:
+                                number: 9090
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: operator-ingress
+    namespace: kubedeck-system
+    annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+    ingressClassName: nginx
+    tls:
+        - secretName: operator-tls
+          hosts:
+              - ui.orion.nikcorp.ru
+    rules:
+        - host: ui.orion.nikcorp.ru
+          http:
+              paths:
+                  - path: /operator(/|$)(.*)
+                    pathType: ImplementationSpecific
+                    backend:
+                        service:
+                            name: kubedeck-controller-manager-metrics-service
+                            port:
+                                number: 8999

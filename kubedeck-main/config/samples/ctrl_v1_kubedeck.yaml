@@ -1,0 +1,9 @@
+apiVersion: ctrl.nikcorp.ru/v1
+kind: Kubedeck
+metadata:
+  labels:
+    app.kubernetes.io/name: kubedeck
+    app.kubernetes.io/managed-by: kustomize
+  name: kubedeck-sample
+spec:
+  # TODO(user): Add fields here

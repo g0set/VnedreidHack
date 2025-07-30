@@ -1,0 +1,182 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-left: 70px;
+    max-width: 1200px;
+}
+
+.title {
+    font-size: 32px;
+    color: #fff;
+    margin: 0;
+}
+
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tabButton {
+    padding: 8px 16px;
+    background-color: #2a2a2a;
+    color: #888;
+    border: 1px solid #444;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.tabButton:hover {
+    background-color: #3a3a3a;
+    color: #fff;
+}
+
+.activeTab {
+    background-color: #f23a2a;
+    color: #fff;
+    border-color: #f23a2a;
+}
+
+.resourceSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: rgba(42, 42, 42, 0.5);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(70, 70, 70, 0.5);
+}
+
+.resourceHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resourceTitle {
+    font-size: 24px;
+    color: #fff;
+    margin: 0;
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 16px;
+}
+
+.refreshButton {
+    padding: 8px 16px;
+    background-color: #f23a2a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.refreshButton:hover {
+    background-color: #ff4b3b;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto;
+}
+
+.tableHeader {
+    text-align: left;
+    padding: 12px;
+    background-color: rgba(42, 42, 42, 0.8);
+    color: #fff;
+    font-weight: 500;
+}
+
+.tableHeader:first-child {
+    border-top-left-radius: 8px;
+}
+
+.tableHeader:last-child {
+    border-top-right-radius: 8px;
+}
+
+.tableRow {
+    border-bottom: 1px solid rgba(70, 70, 70, 0.5);
+}
+
+.tableRow:hover {
+    background-color: rgba(42, 42, 42, 0.3);
+}
+
+.tableCell {
+    padding: 12px;
+    color: #fff;
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.statusRunning {
+    background-color: #059669;
+}
+
+.statusPending {
+    background-color: #d97706;
+}
+
+.statusFailed {
+    background-color: #dc2626;
+}
+
+.error {
+    color: #dc2626;
+    padding: 12px;
+    background-color: rgba(220, 38, 38, 0.1);
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.loading {
+    color: #888;
+    font-size: 18px;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.empty {
+    color: #888;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+/* Make tables responsive */
+@media (max-width: 1200px) {
+    .resourceSection {
+        overflow-x: auto;
+    }
+
+    .table {
+        min-width: 800px;
+    }
+}

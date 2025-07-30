@@ -1,0 +1,31 @@
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 58px;
+    margin: 0 0 50px 20px;
+}
+
+.nav__svg {
+    fill: #f23a2a;
+    width: 150px;
+}
+
+.nav_links {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.links__link {
+    font-size: 20px;
+    color: #929292;
+    transition: color .2s ease-in-out;    
+}
+
+.links__link:hover {
+    color: #fff;
+}
+
+.active {
+    color: #fff;
+}

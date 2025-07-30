@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- ctrl_v1_kubedeck.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

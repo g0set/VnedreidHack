@@ -1,0 +1,164 @@
+openapi: 3.0.3
+info:
+    title: Kubedeck Telegram Bot Configuration API
+    description: API for configuring the Telegram bot integration in Kubedeck
+    version: 1.0.0
+servers:
+    - url: http://localhost:8999
+      description: Local Kubedeck server
+paths:
+    /telegram/config:
+        post:
+            summary: Update Telegram bot configuration
+            description: |
+                Updates the configuration for the Telegram bot that sends alerts about Kubernetes resource usage.
+                At least one configuration parameter must be specified in the request.
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/TelegramBotConfig"
+            responses:
+                "200":
+                    description: Configuration updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    success:
+                                        type: boolean
+                                        description: Indicates if the operation was successful
+                                        example: true
+                                    message:
+                                        type: string
+                                        description: Status message
+                                        example: Telegram bot settings updated successfully
+                                    changed:
+                                        type: boolean
+                                        description: Indicates if any settings were actually changed
+                                        example: true
+                                    settings:
+                                        type: object
+                                        properties:
+                                            tokenUpdated:
+                                                type: boolean
+                                                description: Indicates if the token was updated
+                                                example: true
+                                            intervalUpdated:
+                                                type: boolean
+                                                description: Indicates if the check interval was updated
+                                                example: true
+                                            chatIDsUpdated:
+                                                type: boolean
+                                                description: Indicates if the chat IDs were updated
+                                                example: true
+                                            currentInterval:
+                                                type: integer
+                                                description: Current check interval in seconds
+                                                example: 3600
+                                            currentChatIDs:
+                                                type: array
+                                                description: Current list of chat IDs
+                                                items:
+                                                    type: integer
+                                                    format: int64
+                                                example:
+                                                    [-4835116305, 123456789]
+                "400":
+                    description: Bad request - invalid input
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        example: Failure
+                                    message:
+                                        type: string
+                                        example: At least one of token, checkInterval or chatIDs must be specified
+                                    reason:
+                                        type: string
+                                        example: Bad Request
+                                    code:
+                                        type: integer
+                                        example: 400
+                "405":
+                    description: Method not allowed - only POST is supported
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        example: Failure
+                                    message:
+                                        type: string
+                                        example: Method not allowed
+                                    reason:
+                                        type: string
+                                        example: Method Not Allowed
+                                    code:
+                                        type: integer
+                                        example: 405
+                "500":
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        example: Failure
+                                    message:
+                                        type: string
+                                        example: Failed to encode response
+                                    reason:
+                                        type: string
+                                        example: Internal Server Error
+                                    code:
+                                        type: integer
+                                        example: 500
+components:
+    schemas:
+        TelegramBotConfig:
+            type: object
+            description: Configuration for the Telegram bot
+            properties:
+                token:
+                    type: string
+                    description: |
+                        Telegram bot token. If not provided, the existing token will be used.
+                        For security reasons, tokens should be handled carefully.
+                    example: 1234567890:ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                checkInterval:
+                    type: integer
+                    description: |
+                        Interval in seconds between resource checks.
+                        The bot will analyze Kubernetes resources at this interval.
+                    minimum: 1
+                    example: 3600
+                chatIDs:
+                    type: array
+                    description: |
+                        Array of Telegram chat IDs where the bot will send alerts.
+                        These can be group chat IDs or individual user IDs.
+                    items:
+                        type: integer
+                        format: int64
+                    example: [-4835116305, 123456789]
+                responseStyle:
+                    type: string
+                    description: |
+                        Text that defines the style of responses from the bot.
+                        This will be used as a prefix for LLM prompts.
+                    example: Технический отчет о состоянии ресурсов Kubernetes с рекомендациями.
+            example:
+                token: 1234567890:ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                checkInterval: 3600
+                chatIDs: [-4835116305, 123456789]
+                responseStyle: Технический отчет о состоянии ресурсов Kubernetes с рекомендациями.

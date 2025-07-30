@@ -1,0 +1,1013 @@
+openapi: 3.0.3
+info:
+    title: Kubedeck API
+    description: |
+        API for the Kubedeck Kubernetes controller that provides endpoints to interact with various Kubernetes resources.
+        This API allows listing, monitoring, and managing Kubernetes objects across the cluster.
+    version: 1.0.0
+    contact:
+        name: Kubedeck Support
+        url: https://github.com/nikcorp/kubedeck
+servers:
+    - url: http://localhost:8999
+      description: Local Kubedeck API server
+paths:
+    /pods:
+        get:
+            summary: List all pods
+            description: Returns a list of all pods across all namespaces in the cluster
+            operationId: listPods
+            parameters:
+                - name: namespace
+                  in: query
+                  description: Filter pods by namespace
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Pod"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /pv:
+        get:
+            summary: List all persistent volumes
+            description: Returns a list of all persistent volumes in the cluster
+            operationId: listPersistentVolumes
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/PersistentVolume"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /pvc:
+        get:
+            summary: List all persistent volume claims
+            description: Returns a list of all persistent volume claims across all namespaces in the cluster
+            operationId: listPersistentVolumeClaims
+            parameters:
+                - name: namespace
+                  in: query
+                  description: Filter claims by namespace
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/PersistentVolumeClaim"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /configmaps:
+        get:
+            summary: List all configmaps
+            description: Returns a list of all configmaps across all namespaces in the cluster
+            operationId: listConfigMaps
+            parameters:
+                - name: namespace
+                  in: query
+                  description: Filter configmaps by namespace
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/ConfigMap"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /services:
+        get:
+            summary: List all services
+            description: Returns a list of all services across all namespaces in the cluster
+            operationId: listServices
+            parameters:
+                - name: namespace
+                  in: query
+                  description: Filter services by namespace
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Service"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /ingresses:
+        get:
+            summary: List all ingresses
+            description: Returns a list of all ingresses across all namespaces in the cluster
+            operationId: listIngresses
+            parameters:
+                - name: namespace
+                  in: query
+                  description: Filter ingresses by namespace
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Ingress"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /deployments:
+        get:
+            summary: List all deployments
+            description: Returns a list of all deployments across all namespaces in the cluster
+            operationId: listDeployments
+            parameters:
+                - name: namespace
+                  in: query
+                  description: Filter deployments by namespace
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Deployment"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /statefulsets:
+        get:
+            summary: List all statefulsets
+            description: Returns a list of all statefulsets across all namespaces in the cluster
+            operationId: listStatefulSets
+            parameters:
+                - name: namespace
+                  in: query
+                  description: Filter statefulsets by namespace
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/StatefulSet"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /daemonsets:
+        get:
+            summary: List all daemonsets
+            description: Returns a list of all daemonsets across all namespaces in the cluster
+            operationId: listDaemonSets
+            parameters:
+                - name: namespace
+                  in: query
+                  description: Filter daemonsets by namespace
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/DaemonSet"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /replicasets:
+        get:
+            summary: List all replicasets
+            description: Returns a list of all replicasets across all namespaces in the cluster
+            operationId: listReplicaSets
+            parameters:
+                - name: namespace
+                  in: query
+                  description: Filter replicasets by namespace
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/ReplicaSet"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /namespaces:
+        get:
+            summary: List all namespaces
+            description: Returns a list of all namespaces in the cluster
+            operationId: listNamespaces
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Namespace"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /nodes:
+        get:
+            summary: List all nodes
+            description: Returns a list of all nodes in the cluster
+            operationId: listNodes
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Node"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /storageclasses:
+        get:
+            summary: List all storage classes
+            description: Returns a list of all storage classes in the cluster
+            operationId: listStorageClasses
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/StorageClass"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+    /logs:
+        get:
+            summary: Get pod logs
+            description: Returns logs for a specific pod and optionally a specific container
+            operationId: getPodLogs
+            parameters:
+                - name: pod
+                  in: query
+                  description: Name of the pod
+                  required: true
+                  schema:
+                      type: string
+                - name: namespace
+                  in: query
+                  description: Namespace of the pod
+                  required: true
+                  schema:
+                      type: string
+                - name: container
+                  in: query
+                  description: Container name (optional, if not specified returns logs from the first container)
+                  required: false
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                                description: Pod logs
+                "400":
+                    description: Bad request - missing required parameters
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                "500":
+                    $ref: "#/components/responses/InternalServerError"
+
+components:
+    responses:
+        InternalServerError:
+            description: Internal Server Error
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+
+    schemas:
+        Error:
+            type: object
+            properties:
+                message:
+                    type: string
+                    description: Error message
+                    example: Failed to list pods
+            required:
+                - message
+
+        ObjectMeta:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: Name of the resource
+                    example: nginx-pod
+                namespace:
+                    type: string
+                    description: Namespace of the resource
+                    example: default
+                uid:
+                    type: string
+                    description: Unique identifier
+                    example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                resourceVersion:
+                    type: string
+                    description: Resource version
+                    example: "12345"
+                creationTimestamp:
+                    type: string
+                    format: date-time
+                    description: Creation timestamp
+                    example: "2023-06-01T12:00:00Z"
+                labels:
+                    type: object
+                    additionalProperties:
+                        type: string
+                    description: Resource labels
+                    example:
+                        app: nginx
+                        environment: production
+                annotations:
+                    type: object
+                    additionalProperties:
+                        type: string
+                    description: Resource annotations
+                    example:
+                        description: Web server
+
+        Container:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: Name of the container
+                    example: nginx
+                image:
+                    type: string
+                    description: Container image
+                    example: nginx:1.21
+                ports:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            containerPort:
+                                type: integer
+                                description: Port number
+                                example: 80
+                            protocol:
+                                type: string
+                                description: Protocol
+                                example: TCP
+                resources:
+                    type: object
+                    properties:
+                        requests:
+                            type: object
+                            properties:
+                                cpu:
+                                    type: string
+                                    description: CPU request
+                                    example: 100m
+                                memory:
+                                    type: string
+                                    description: Memory request
+                                    example: 128Mi
+                        limits:
+                            type: object
+                            properties:
+                                cpu:
+                                    type: string
+                                    description: CPU limit
+                                    example: 200m
+                                memory:
+                                    type: string
+                                    description: Memory limit
+                                    example: 256Mi
+
+        Pod:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                spec:
+                    type: object
+                    properties:
+                        containers:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/Container"
+                        nodeName:
+                            type: string
+                            description: Name of the node where the pod is running
+                            example: worker-node-1
+                status:
+                    type: object
+                    properties:
+                        phase:
+                            type: string
+                            description: Current phase of the pod
+                            example: Running
+                        podIP:
+                            type: string
+                            description: IP address of the pod
+                            example: 10.0.0.1
+
+        PersistentVolume:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                spec:
+                    type: object
+                    properties:
+                        capacity:
+                            type: object
+                            properties:
+                                storage:
+                                    type: string
+                                    description: Storage capacity
+                                    example: 10Gi
+                        accessModes:
+                            type: array
+                            items:
+                                type: string
+                            description: Access modes
+                            example: ["ReadWriteOnce"]
+                        persistentVolumeReclaimPolicy:
+                            type: string
+                            description: Reclaim policy
+                            example: Delete
+                        storageClassName:
+                            type: string
+                            description: Storage class name
+                            example: standard
+                status:
+                    type: object
+                    properties:
+                        phase:
+                            type: string
+                            description: Current phase of the volume
+                            example: Bound
+
+        PersistentVolumeClaim:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                spec:
+                    type: object
+                    properties:
+                        accessModes:
+                            type: array
+                            items:
+                                type: string
+                            description: Access modes
+                            example: ["ReadWriteOnce"]
+                        resources:
+                            type: object
+                            properties:
+                                requests:
+                                    type: object
+                                    properties:
+                                        storage:
+                                            type: string
+                                            description: Storage request
+                                            example: 5Gi
+                        storageClassName:
+                            type: string
+                            description: Storage class name
+                            example: standard
+                status:
+                    type: object
+                    properties:
+                        phase:
+                            type: string
+                            description: Current phase of the claim
+                            example: Bound
+
+        ConfigMap:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                data:
+                    type: object
+                    additionalProperties:
+                        type: string
+                    description: ConfigMap data
+                    example:
+                        key1: value1
+                        key2: value2
+
+        Service:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                spec:
+                    type: object
+                    properties:
+                        selector:
+                            type: object
+                            additionalProperties:
+                                type: string
+                            description: Label selector
+                            example:
+                                app: nginx
+                        ports:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    port:
+                                        type: integer
+                                        description: Port number
+                                        example: 80
+                                    targetPort:
+                                        type: integer
+                                        description: Target port number
+                                        example: 8080
+                                    protocol:
+                                        type: string
+                                        description: Protocol
+                                        example: TCP
+                        type:
+                            type: string
+                            description: Service type
+                            example: ClusterIP
+                status:
+                    type: object
+                    properties:
+                        loadBalancer:
+                            type: object
+                            properties:
+                                ingress:
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            ip:
+                                                type: string
+                                                description: Load balancer IP
+                                                example: 192.168.1.1
+
+        Ingress:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                spec:
+                    type: object
+                    properties:
+                        rules:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    host:
+                                        type: string
+                                        description: Host name
+                                        example: example.com
+                                    http:
+                                        type: object
+                                        properties:
+                                            paths:
+                                                type: array
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        path:
+                                                            type: string
+                                                            description: URL path
+                                                            example: /api
+                                                        pathType:
+                                                            type: string
+                                                            description: Path type
+                                                            example: Prefix
+                                                        backend:
+                                                            type: object
+                                                            properties:
+                                                                service:
+                                                                    type: object
+                                                                    properties:
+                                                                        name:
+                                                                            type: string
+                                                                            description: Service name
+                                                                            example: api-service
+                                                                        port:
+                                                                            type: object
+                                                                            properties:
+                                                                                number:
+                                                                                    type: integer
+                                                                                    description: Service port
+                                                                                    example: 80
+                        tls:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    hosts:
+                                        type: array
+                                        items:
+                                            type: string
+                                        description: TLS hosts
+                                        example: ["example.com"]
+                                    secretName:
+                                        type: string
+                                        description: Secret name
+                                        example: example-tls
+                status:
+                    type: object
+                    properties:
+                        loadBalancer:
+                            type: object
+                            properties:
+                                ingress:
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            ip:
+                                                type: string
+                                                description: Load balancer IP
+                                                example: 192.168.1.1
+
+        Deployment:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                spec:
+                    type: object
+                    properties:
+                        replicas:
+                            type: integer
+                            description: Number of desired replicas
+                            example: 3
+                        selector:
+                            type: object
+                            properties:
+                                matchLabels:
+                                    type: object
+                                    additionalProperties:
+                                        type: string
+                                    description: Label selector
+                                    example:
+                                        app: nginx
+                        template:
+                            type: object
+                            properties:
+                                metadata:
+                                    $ref: "#/components/schemas/ObjectMeta"
+                                spec:
+                                    type: object
+                                    properties:
+                                        containers:
+                                            type: array
+                                            items:
+                                                $ref: "#/components/schemas/Container"
+                status:
+                    type: object
+                    properties:
+                        replicas:
+                            type: integer
+                            description: Total number of non-terminated pods
+                            example: 3
+                        availableReplicas:
+                            type: integer
+                            description: Number of available replicas
+                            example: 3
+
+        StatefulSet:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                spec:
+                    type: object
+                    properties:
+                        replicas:
+                            type: integer
+                            description: Number of desired replicas
+                            example: 3
+                        selector:
+                            type: object
+                            properties:
+                                matchLabels:
+                                    type: object
+                                    additionalProperties:
+                                        type: string
+                                    description: Label selector
+                                    example:
+                                        app: mongodb
+                        serviceName:
+                            type: string
+                            description: Service name
+                            example: mongodb-headless
+                        template:
+                            type: object
+                            properties:
+                                metadata:
+                                    $ref: "#/components/schemas/ObjectMeta"
+                                spec:
+                                    type: object
+                                    properties:
+                                        containers:
+                                            type: array
+                                            items:
+                                                $ref: "#/components/schemas/Container"
+                        volumeClaimTemplates:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/PersistentVolumeClaim"
+                status:
+                    type: object
+                    properties:
+                        replicas:
+                            type: integer
+                            description: Total number of non-terminated pods
+                            example: 3
+                        readyReplicas:
+                            type: integer
+                            description: Number of ready replicas
+                            example: 3
+
+        DaemonSet:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                spec:
+                    type: object
+                    properties:
+                        selector:
+                            type: object
+                            properties:
+                                matchLabels:
+                                    type: object
+                                    additionalProperties:
+                                        type: string
+                                    description: Label selector
+                                    example:
+                                        app: fluentd
+                        template:
+                            type: object
+                            properties:
+                                metadata:
+                                    $ref: "#/components/schemas/ObjectMeta"
+                                spec:
+                                    type: object
+                                    properties:
+                                        containers:
+                                            type: array
+                                            items:
+                                                $ref: "#/components/schemas/Container"
+                status:
+                    type: object
+                    properties:
+                        numberReady:
+                            type: integer
+                            description: Number of nodes that should be running the daemon pod and have one or more daemon pods running and ready
+                            example: 3
+                        desiredNumberScheduled:
+                            type: integer
+                            description: Total number of nodes that should be running the daemon pod
+                            example: 3
+
+        ReplicaSet:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                spec:
+                    type: object
+                    properties:
+                        replicas:
+                            type: integer
+                            description: Number of desired replicas
+                            example: 3
+                        selector:
+                            type: object
+                            properties:
+                                matchLabels:
+                                    type: object
+                                    additionalProperties:
+                                        type: string
+                                    description: Label selector
+                                    example:
+                                        app: nginx
+                        template:
+                            type: object
+                            properties:
+                                metadata:
+                                    $ref: "#/components/schemas/ObjectMeta"
+                                spec:
+                                    type: object
+                                    properties:
+                                        containers:
+                                            type: array
+                                            items:
+                                                $ref: "#/components/schemas/Container"
+                status:
+                    type: object
+                    properties:
+                        replicas:
+                            type: integer
+                            description: Most recently observed number of replicas
+                            example: 3
+                        readyReplicas:
+                            type: integer
+                            description: Number of ready replicas
+                            example: 3
+
+        Namespace:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                spec:
+                    type: object
+                    properties:
+                        finalizers:
+                            type: array
+                            items:
+                                type: string
+                            description: List of finalizers
+                            example: ["kubernetes"]
+                status:
+                    type: object
+                    properties:
+                        phase:
+                            type: string
+                            description: Phase of the namespace
+                            example: Active
+
+        Node:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                spec:
+                    type: object
+                    properties:
+                        podCIDR:
+                            type: string
+                            description: CIDR block for pods on this node
+                            example: 10.244.1.0/24
+                        taints:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    key:
+                                        type: string
+                                        description: Taint key
+                                        example: node-role.kubernetes.io/master
+                                    value:
+                                        type: string
+                                        description: Taint value
+                                        example: ""
+                                    effect:
+                                        type: string
+                                        description: Taint effect
+                                        example: NoSchedule
+                status:
+                    type: object
+                    properties:
+                        capacity:
+                            type: object
+                            properties:
+                                cpu:
+                                    type: string
+                                    description: CPU capacity
+                                    example: "4"
+                                memory:
+                                    type: string
+                                    description: Memory capacity
+                                    example: 8Gi
+                        allocatable:
+                            type: object
+                            properties:
+                                cpu:
+                                    type: string
+                                    description: Allocatable CPU
+                                    example: "3"
+                                memory:
+                                    type: string
+                                    description: Allocatable memory
+                                    example: 7Gi
+                        conditions:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    type:
+                                        type: string
+                                        description: Condition type
+                                        example: Ready
+                                    status:
+                                        type: string
+                                        description: Condition status
+                                        example: "True"
+                        addresses:
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    type:
+                                        type: string
+                                        description: Address type
+                                        example: InternalIP
+                                    address:
+                                        type: string
+                                        description: Address
+                                        example: 192.168.1.2
+
+        StorageClass:
+            type: object
+            properties:
+                metadata:
+                    $ref: "#/components/schemas/ObjectMeta"
+                provisioner:
+                    type: string
+                    description: Storage provisioner
+                    example: kubernetes.io/aws-ebs
+                parameters:
+                    type: object
+                    additionalProperties:
+                        type: string
+                    description: Storage class parameters
+                    example:
+                        type: gp2
+                        fsType: ext4
+                reclaimPolicy:
+                    type: string
+                    description: Reclaim policy
+                    example: Delete
+                volumeBindingMode:
+                    type: string
+                    description: Volume binding mode
+                    example: Immediate
